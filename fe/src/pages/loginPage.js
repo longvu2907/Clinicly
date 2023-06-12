@@ -1,8 +1,8 @@
+import { faMoon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Layout } from 'antd';
 import React from 'react';
 import { LoginComponent } from '../components/Login/loginComponent';
-import { faMoon } from '@fortawesome/free-solid-svg-icons';
 const { Content } = Layout;
 
 export const LoginPage = () => {

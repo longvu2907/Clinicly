@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
-import axios from 'axios';
+import { loginAPI } from './api';
+import Cookies from 'js-cookie';
 
 export const LoginComponent = () => {
   const [email, setEmail] = useState('');
@@ -8,15 +9,20 @@ export const LoginComponent = () => {
 
   const handleSubmit = async (event) => {
     try {
-      const response = await axios.post('/auth/login', {
-        email,
-        password,
-      });
-      // Handle successful login
-      console.log(response);
+      const user = await loginAPI(email, password);
+      Cookies.set('token', user.token, { expires: 7 });
+      // Do something with the logged-in user
     } catch (error) {
-      // Handle error
-      console.log(error);
+      // Handle login error
+      console.error(error);
+    }
+  };
+
+  const updateFormData = (event) => {
+    if (event.target.type === 'text') {
+      setEmail(event.target.value);
+    } else if (event.target.type === 'password') {
+      setPassword(event.target.value);
     }
   };
 
@@ -27,15 +33,15 @@ export const LoginComponent = () => {
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
-      onFinish={handleSubmit}
       autoComplete="off"
+      onFinish={handleSubmit}
     >
       <Form.Item
         label="Email"
         name="email"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={updateFormData}
         rules={[{ required: true, message: 'Please input your email!' }]}
       >
         <Input />
@@ -46,7 +52,7 @@ export const LoginComponent = () => {
         name="password"
         type="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={updateFormData}
         rules={[{ required: true, message: 'Please input your password!' }]}
       >
         <Input.Password />
