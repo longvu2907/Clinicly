@@ -49,6 +49,217 @@ const docTemplate = `{
                 }
             }
         },
+        "/medical-report": {
+            "get": {
+                "description": "Get medical report",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Get medical report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create medical report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Create medical report",
+                "parameters": [
+                    {
+                        "description": "Medical report data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medical-report/{id}": {
+            "get": {
+                "description": "Get medical report by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Get medical report by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update medical report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Update medical report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Medical report id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medical report data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UpdateMedicalReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete medical report",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Delete medical report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Medical report id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine": {
+            "get": {
+                "description": "Get medicine",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Get medicine",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine id",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Medicine name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicine response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineListResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/patient": {
             "get": {
                 "description": "Get patient",
@@ -59,6 +270,28 @@ const docTemplate = `{
                     "patient"
                 ],
                 "summary": "Get patient",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Patient response",
@@ -67,9 +300,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/patient/create": {
+            },
             "post": {
                 "description": "Create patient",
                 "consumes": [
@@ -101,6 +332,19 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/patient/enums": {
+            "get": {
+                "description": "Get patient enums",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "patient"
+                ],
+                "summary": "Get patient enums",
+                "responses": {}
             }
         },
         "/patient/{id}": {
@@ -216,9 +460,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/regulation/create": {
+            },
             "post": {
                 "description": "Create regulation",
                 "consumes": [
@@ -291,6 +533,33 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Delete regulation",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "regulation"
+                ],
+                "summary": "Delete regulation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Regulation id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Regulation response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.RegulationResponse"
+                        }
+                    }
+                }
             }
         },
         "/staff": {
@@ -308,6 +577,18 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Staff name",
                         "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by field",
+                        "name": "order_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Is descending order",
+                        "name": "desc",
                         "in": "query"
                     },
                     {
@@ -333,9 +614,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/staff/create": {
+            },
             "post": {
                 "description": "Create staff",
                 "consumes": [
@@ -367,6 +646,19 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/staff/enums": {
+            "get": {
+                "description": "Get staff enums",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "staff"
+                ],
+                "summary": "Get staff enums",
+                "responses": {}
             }
         },
         "/staff/{id}": {
@@ -463,6 +755,179 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/ticket": {
+            "get": {
+                "description": "Get ticket",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "Get ticket",
+                "parameters": [
+                    {
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
+                        "type": "integer",
+                        "description": "Ticket status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "STT",
+                        "description": "Order by",
+                        "name": "order_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.TicketListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create ticket",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "Create ticket",
+                "parameters": [
+                    {
+                        "description": "Ticket data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.TicketRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.TicketResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/ticket/enums": {
+            "get": {
+                "description": "Get ticket enums",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "Get ticket enums",
+                "responses": {}
+            }
+        },
+        "/ticket/{id}": {
+            "put": {
+                "description": "Update ticket",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "Update ticket",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Ticket id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Ticket data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UpdateTicketRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.TicketResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete ticket",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ticket"
+                ],
+                "summary": "Delete ticket",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Ticket id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.TicketResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -486,6 +951,84 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/models.User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicalReportListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.MedicalReport"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicalReportRequest": {
+            "type": "object",
+            "required": [
+                "doctor_id",
+                "patient_id"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "diagnose": {
+                    "type": "string"
+                },
+                "doctor_id": {
+                    "type": "integer"
+                },
+                "patient_id": {
+                    "type": "integer"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.PrescriptionRequest"
+                    }
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.MedicalReportResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.MedicalReport"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicineListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Medicine"
+                    }
                 },
                 "message": {
                     "type": "string"
@@ -533,7 +1076,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "gender": {
-                    "type": "string"
+                    "$ref": "#/definitions/types.Gender"
                 },
                 "identity_card": {
                     "type": "string"
@@ -560,6 +1103,25 @@ const docTemplate = `{
                 }
             }
         },
+        "controllers.PrescriptionRequest": {
+            "type": "object",
+            "required": [
+                "instruction",
+                "medicine_id",
+                "quantity"
+            ],
+            "properties": {
+                "instruction": {
+                    "type": "string"
+                },
+                "medicine_id": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
         "controllers.RegulationListResponse": {
             "type": "object",
             "properties": {
@@ -578,7 +1140,26 @@ const docTemplate = `{
             }
         },
         "controllers.RegulationRequest": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "name",
+                "updated_by",
+                "value"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
         },
         "controllers.RegulationResponse": {
             "type": "object",
@@ -622,7 +1203,7 @@ const docTemplate = `{
                 "identity_card",
                 "password",
                 "phone_number",
-                "staff_type"
+                "role"
             ],
             "properties": {
                 "address": {
@@ -638,7 +1219,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "gender": {
-                    "type": "string"
+                    "$ref": "#/definitions/types.Gender"
                 },
                 "identity_card": {
                     "type": "string"
@@ -649,14 +1230,14 @@ const docTemplate = `{
                 "phone_number": {
                     "type": "string"
                 },
+                "role": {
+                    "$ref": "#/definitions/types.Role"
+                },
                 "salary": {
                     "type": "integer"
                 },
-                "staff_type": {
-                    "type": "string"
-                },
                 "status": {
-                    "type": "string"
+                    "$ref": "#/definitions/types.StaffStatus"
                 },
                 "updated_by": {
                     "type": "integer"
@@ -677,16 +1258,79 @@ const docTemplate = `{
                 }
             }
         },
-        "controllers.UpdatePatientRequest": {
+        "controllers.TicketListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Ticket"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.TicketRequest": {
             "type": "object",
             "required": [
-                "address",
-                "birth_date",
-                "full_name",
-                "gender",
-                "identity_card",
-                "phone_number"
+                "patient_id"
             ],
+            "properties": {
+                "patient_id": {
+                    "type": "integer"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.TicketResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Ticket"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.UpdateMedicalReportRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "diagnose": {
+                    "type": "string"
+                },
+                "doctor_id": {
+                    "type": "integer"
+                },
+                "patient_id": {
+                    "type": "integer"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.PrescriptionRequest"
+                    }
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.UpdatePatientRequest": {
+            "type": "object",
             "properties": {
                 "address": {
                     "type": "string"
@@ -698,7 +1342,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "gender": {
-                    "type": "string"
+                    "$ref": "#/definitions/types.Gender"
                 },
                 "identity_card": {
                     "type": "string"
@@ -721,7 +1365,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "value": {
-                    "$ref": "#/definitions/datatypes.JSON"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },
@@ -741,7 +1388,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "gender": {
-                    "type": "string"
+                    "$ref": "#/definitions/types.Gender"
                 },
                 "identity_card": {
                     "type": "string"
@@ -752,13 +1399,62 @@ const docTemplate = `{
                 "phone_number": {
                     "type": "string"
                 },
+                "role": {
+                    "$ref": "#/definitions/types.Role"
+                },
                 "salary": {
                     "type": "integer"
                 },
-                "staff_type": {
+                "status": {
+                    "$ref": "#/definitions/types.StaffStatus"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.UpdateTicketRequest": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/types.TicketStatus"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.MedicalReport": {
+            "type": "object",
+            "properties": {
+                "created_at": {
                     "type": "string"
                 },
-                "status": {
+                "date": {
+                    "type": "string"
+                },
+                "diagnose": {
+                    "type": "string"
+                },
+                "doctor": {
+                    "$ref": "#/definitions/models.Staff"
+                },
+                "doctor_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "patient_id": {
+                    "type": "integer"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Prescription"
+                    }
+                },
+                "updated_at": {
                     "type": "string"
                 },
                 "updated_by": {
@@ -766,8 +1462,37 @@ const docTemplate = `{
                 }
             }
         },
-        "datatypes.JSON": {
-            "type": "object"
+        "models.Medicine": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
         },
         "models.Patient": {
             "type": "object",
@@ -804,6 +1529,32 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Prescription": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "instruction": {
+                    "type": "string"
+                },
+                "medical_report_id": {
+                    "type": "integer"
+                },
+                "medicine_id": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Regulation": {
             "type": "object",
             "properties": {
@@ -823,7 +1574,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "value": {
-                    "$ref": "#/definitions/datatypes.JSON"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },
@@ -857,11 +1611,43 @@ const docTemplate = `{
                 "phone_number": {
                     "type": "string"
                 },
+                "role": {
+                    "type": "string"
+                },
                 "salary": {
                     "type": "integer"
                 },
-                "staff_type": {
+                "status": {
                     "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Ticket": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "number": {
+                    "type": "integer"
+                },
+                "patient": {
+                    "$ref": "#/definitions/models.Patient"
+                },
+                "patient_id": {
+                    "type": "integer"
                 },
                 "status": {
                     "type": "string"
@@ -887,6 +1673,58 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "types.Gender": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3
+            ],
+            "x-enum-varnames": [
+                "Male",
+                "Female",
+                "Other"
+            ]
+        },
+        "types.Role": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-varnames": [
+                "Receptionist",
+                "Doctor",
+                "Pharmacist",
+                "Admin"
+            ]
+        },
+        "types.StaffStatus": {
+            "type": "integer",
+            "enum": [
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "Working",
+                "Quit"
+            ]
+        },
+        "types.TicketStatus": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3
+            ],
+            "x-enum-varnames": [
+                "Waiting",
+                "Processing",
+                "Done"
+            ]
         }
     }
 }`

@@ -1,5 +1,7 @@
 package models
 
+import "clinic-management/types"
+
 const TableNameUser = "NhanVien"
 
 type User struct {
@@ -16,11 +18,30 @@ func (User) TableName() string {
 func GetUserByEmail(email string) (*User, error) {
 	user := &User{}
 
-	err := DB.Where(&User{Email: email}).Find(&user).Error
+	err := DB.Where(&User{Email: email}).First(&user).Error
 
 	if err != nil {
 		return nil, err
 	}
 
 	return user, nil
+}
+
+func initAdminAccount() {
+	var adminAccount = Staff{
+		Email:        "admin",
+		Role:         types.Admin.Value(),
+		Password:     "admin",
+		FullName:     "admin",
+		IdentityCard: "000000000000",
+		PhoneNumber:  "0000000000",
+		Status:       types.Working.Value(),
+		Gender:       types.Male.Value(),
+		Address:      "TP HCM",
+	}
+
+	if _, err := GetUserByEmail(adminAccount.Email); err != nil {
+		adminAccount.Create()
+		return
+	}
 }

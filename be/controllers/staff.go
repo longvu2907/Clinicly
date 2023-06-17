@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"clinic-management/models"
+	"clinic-management/types"
 	"clinic-management/utils/query"
 	"net/http"
 	"time"
@@ -10,33 +11,33 @@ import (
 )
 
 type StaffRequest struct {
-	FullName     string    `json:"full_name" binding:"required"`
-	BirthDate    time.Time `json:"birth_date" binding:"required"`
-	Gender       string    `json:"gender" binding:"required"`
-	Address      string    `json:"address" binding:"required"`
-	IdentityCard string    `json:"identity_card" binding:"required"`
-	PhoneNumber  string    `json:"phone_number" binding:"required"`
-	Email        string    `json:"email" binding:"required"`
-	StaffType    string    `json:"staff_type" binding:"required"`
-	Salary       uint      `json:"salary"`
-	Status       string    `json:"status"`
-	Password     string    `json:"password" binding:"required"`
-	UpdatedBy    *uint     `json:"updated_by"`
+	FullName     string            `json:"full_name" binding:"required"`
+	BirthDate    *time.Time        `json:"birth_date" binding:"required"`
+	Gender       types.Gender      `json:"gender" binding:"required,enum"`
+	Address      string            `json:"address" binding:"required"`
+	IdentityCard string            `json:"identity_card" binding:"required"`
+	PhoneNumber  string            `json:"phone_number" binding:"required"`
+	Email        string            `json:"email" binding:"required"`
+	Role         types.Role        `json:"role" binding:"required,enum"`
+	Salary       uint              `json:"salary"`
+	Status       types.StaffStatus `json:"status" binding:"enum"`
+	Password     string            `json:"password" binding:"required"`
+	UpdatedBy    *uint             `json:"updated_by"`
 }
 
 type UpdateStaffRequest struct {
-	FullName     string    `json:"full_name"`
-	BirthDate    time.Time `json:"birth_date"`
-	Gender       string    `json:"gender"`
-	Address      string    `json:"address"`
-	IdentityCard string    `json:"identity_card"`
-	PhoneNumber  string    `json:"phone_number"`
-	Email        string    `json:"email"`
-	StaffType    string    `json:"staff_type"`
-	Salary       uint      `json:"salary"`
-	Status       string    `json:"status"`
-	Password     string    `json:"password"`
-	UpdatedBy    *uint     `json:"updated_by"`
+	FullName     string            `json:"full_name"`
+	BirthDate    *time.Time        `json:"birth_date"`
+	Gender       types.Gender      `json:"gender" binding:"enum"`
+	Address      string            `json:"address"`
+	IdentityCard string            `json:"identity_card"`
+	PhoneNumber  string            `json:"phone_number"`
+	Email        string            `json:"email"`
+	Role         types.Role        `json:"role" binding:"enum"`
+	Salary       uint              `json:"salary"`
+	Status       types.StaffStatus `json:"status" binding:"enum"`
+	Password     string            `json:"password"`
+	UpdatedBy    *uint             `json:"updated_by"`
 }
 
 type StaffResponse struct {
@@ -49,6 +50,67 @@ type StaffListResponse struct {
 	Data []models.Staff `json:"data"`
 }
 
+type StaffQuery struct {
+	PaginateQuery
+	Name    string `form:"name"`
+	OrderBy string `form:"order_by,default=NgayTao"`
+	Desc    bool   `form:"desc,default=false"`
+}
+
+// @Summary Get staff
+// @Description Get staff
+// @Tags staff
+// @Produce json
+// @Param name query string false "Staff name"
+// @Param order_by query string false "Order by field"
+// @Param desc query bool false "Is descending order"
+// @Param page query int false "Page" default(1)
+// @Param page_size query int false "Page size" default(10)
+// @Success 200 {object} StaffListResponse "Staff response"
+// @Router /staff [get]
+func GetStaff(c *gin.Context) {
+	var staffQuery StaffQuery
+	if err := c.ShouldBind(staffQuery); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	staffs, err := models.GetStaff(query.Paginate(c),
+		query.OrderBy(staffQuery.OrderBy, staffQuery.Desc),
+		query.StringSearch("HoTen", staffQuery.Name))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, StaffListResponse{
+		Response: SuccessfulResponse,
+		Data:     staffs,
+	})
+}
+
+// @Summary Get staff by id
+// @Description Get staff by id
+// @Tags staff
+// @Produce json
+// @Param id path int true "Staff id"
+// @Success 200 {object} StaffResponse "Staff response"
+// @Router /staff/{id} [get]
+func GetStaffByID(c *gin.Context) {
+	id := c.Param("id")
+
+	staff, err := models.GetStaffByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, StaffResponse{
+		Response: SuccessfulResponse,
+		Data:     *staff,
+	})
+}
+
 // @Summary Create staff
 // @Description Create staff
 // @Tags staff
@@ -56,7 +118,7 @@ type StaffListResponse struct {
 // @Produce json
 // @Param data body StaffRequest true "Staff data"
 // @Success 200 {object} StaffResponse "Staff response"
-// @Router /staff/create [post]
+// @Router /staff [post]
 func CreateStaff(c *gin.Context) {
 	var input StaffRequest
 	if err := c.ShouldBind(&input); err != nil {
@@ -64,22 +126,24 @@ func CreateStaff(c *gin.Context) {
 		return
 	}
 
+	input.Status = types.Working
+
 	staff := models.Staff{
 		FullName:     input.FullName,
 		BirthDate:    input.BirthDate,
-		Gender:       input.Gender,
+		Gender:       input.Gender.Value(),
 		Address:      input.Address,
 		IdentityCard: input.IdentityCard,
 		PhoneNumber:  input.PhoneNumber,
 		Email:        input.Email,
-		StaffType:    input.StaffType,
+		Role:         input.Role.Value(),
 		Salary:       input.Salary,
-		Status:       input.Status,
+		Status:       input.Status.Value(),
 		Password:     input.Password,
 		UpdatedBy:    input.UpdatedBy,
 	}
 
-	_, err := staff.CreateStaff()
+	_, err := staff.Create()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
 		return
@@ -118,19 +182,19 @@ func UpdateStaff(c *gin.Context) {
 	updatedStaff := models.Staff{
 		FullName:     input.FullName,
 		BirthDate:    input.BirthDate,
-		Gender:       input.Gender,
+		Gender:       input.Gender.Value(),
 		Address:      input.Address,
 		IdentityCard: input.IdentityCard,
 		PhoneNumber:  input.PhoneNumber,
 		Email:        input.Email,
-		StaffType:    input.StaffType,
+		Role:         input.Role.Value(),
 		Salary:       input.Salary,
-		Status:       input.Status,
+		Status:       input.Status.Value(),
 		Password:     input.Password,
 		UpdatedBy:    input.UpdatedBy,
 	}
 
-	staff, err = staff.UpdateStaff(updatedStaff)
+	staff, err = staff.Update(updatedStaff)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
 		return
@@ -158,7 +222,7 @@ func DeleteStaff(c *gin.Context) {
 		return
 	}
 
-	staff, err = staff.DeleteStaff()
+	_, err = staff.Delete()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
 		return
@@ -170,47 +234,15 @@ func DeleteStaff(c *gin.Context) {
 	})
 }
 
-// @Summary Get staff
-// @Description Get staff
+// @Summary Get staff enums
+// @Description Get staff enums
 // @Tags staff
 // @Produce json
-// @Param name query string false "Staff name"
-// @Param page query int false "Page" default(1)
-// @Param page_size query int false "Page size" default(10)
-// @Success 200 {object} StaffListResponse "Staff response"
-// @Router /staff [get]
-func GetStaff(c *gin.Context) {
-	staffs, err := models.GetStaff(query.Paginate(c),
-		query.StringSearch("HoTen", c.Query("name")))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
-		return
-	}
+// @Router /staff/enums [get]
+func GetStaffEnums(c *gin.Context) {
+	response := SuccessfulResponse
 
-	c.JSON(http.StatusOK, StaffListResponse{
-		Response: SuccessfulResponse,
-		Data:     staffs,
-	})
-}
+	response.Data = types.StaffEnums
 
-// @Summary Get staff by id
-// @Description Get staff by id
-// @Tags staff
-// @Produce json
-// @Param id path int true "Staff id"
-// @Success 200 {object} StaffResponse "Staff response"
-// @Router /staff/{id} [get]
-func GetStaffByID(c *gin.Context) {
-	id := c.Param("id")
-
-	staff, err := models.GetStaffByID(id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
-		return
-	}
-
-	c.JSON(http.StatusOK, StaffResponse{
-		Response: SuccessfulResponse,
-		Data:     *staff,
-	})
+	c.JSON(http.StatusOK, response)
 }
