@@ -33,6 +33,5 @@ func Config(r *gin.Engine) {
 		addPatientRoute(authorizedRoute)
 		addTicketRoute(authorizedRoute)
 		addRegulationRoute(authorizedRoute)
-		addMedicalReportRoute(authorizedRoute)
 	}
 }
