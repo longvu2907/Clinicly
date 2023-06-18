@@ -9,13 +9,13 @@ import (
 )
 
 type PatientRequest struct {
-	FullName     string    `json:"full_name" binding:"required"`
-	Gender       string    `json:"gender" binding:"required"`
-	BirthDate    time.Time `json:"birth_date" binding:"required"`
-	IdentityCard string    `json:"identity_card" binding:"required"`
-	Address      string    `json:"address" binding:"required"`
-	PhoneNumber  string    `json:"phone_number" binding:"required"`
-	UpdatedBy    *uint     `json:"updated_by"`
+	FullName     string       `json:"full_name" binding:"required"`
+	Gender       types.Gender `json:"gender" binding:"required,enum"`
+	BirthDate    *time.Time   `json:"birth_date" binding:"required"`
+	IdentityCard string       `json:"identity_card" binding:"required"`
+	Address      string       `json:"address" binding:"required"`
+	PhoneNumber  string       `json:"phone_number" binding:"required"`
+	UpdatedBy    *uint        `json:"updated_by" binding:"required"`
 }
 
 type UpdatePatientRequest struct {
@@ -36,6 +36,65 @@ type PatientResponse struct {
 type PatientListResponse struct {
 	Response
 	Data []models.Patient `json:"data"`
+}
+
+type PatientQuery struct {
+	PaginateQuery
+	Name    string `form:"name"`
+	OrderBy string `form:"order_by,default=NgayTao"`
+	Desc    bool   `form:"desc,default=false"`
+}
+
+// @Summary Get patient
+// @Description Get patient
+// @Tags patient
+// @Produce json
+// @Param name query string false "Patient name"
+// @Param page query int false "Page" default(1)
+// @Param page_size query int false "Page size" default(10)
+// @Success 200 {object} PatientListResponse "Patient response"
+// @Router /patient [get]
+func GetPatient(c *gin.Context) {
+	var patientQuery PatientQuery
+	if err := c.ShouldBind(&patientQuery); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	patients, err := models.GetPatient(query.Paginate(c),
+		query.OrderBy(patientQuery.OrderBy, patientQuery.Desc),
+		query.StringSearch("HoTen", patientQuery.Name))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, PatientListResponse{
+		Response: SuccessfulResponse,
+		Data:     patients,
+	})
+}
+
+// @Summary Get patient by id
+// @Description Get patient by id
+// @Tags patient
+// @Produce json
+// @Param id path int true "Patient id"
+// @Success 200 {object} PatientResponse "Patient response"
+// @Router /patient/{id} [get]
+func GetPatientByID(c *gin.Context) {
+	id := c.Param("id")
+
+	patient, err := models.GetPatientByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, PatientResponse{
+		Response: SuccessfulResponse,
+		Data:     *patient,
+	})
 }
 
 // @Summary Create patient

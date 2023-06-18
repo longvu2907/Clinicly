@@ -22,7 +22,7 @@ type StaffRequest struct {
 	Salary       uint              `json:"salary"`
 	Status       types.StaffStatus `json:"status" binding:"enum"`
 	Password     string            `json:"password" binding:"required"`
-	UpdatedBy    *uint             `json:"updated_by"`
+	UpdatedBy    *uint             `json:"updated_by" binding:"required"`
 }
 
 type UpdateStaffRequest struct {
@@ -48,6 +48,67 @@ type StaffResponse struct {
 type StaffListResponse struct {
 	Response
 	Data []models.Staff `json:"data"`
+}
+
+type StaffQuery struct {
+	PaginateQuery
+	Name    string `form:"name"`
+	OrderBy string `form:"order_by,default=NgayTao"`
+	Desc    bool   `form:"desc,default=false"`
+}
+
+// @Summary Get staff
+// @Description Get staff
+// @Tags staff
+// @Produce json
+// @Param name query string false "Staff name"
+// @Param order_by query string false "Order by field"
+// @Param desc query bool false "Is descending order"
+// @Param page query int false "Page" default(1)
+// @Param page_size query int false "Page size" default(10)
+// @Success 200 {object} StaffListResponse "Staff response"
+// @Router /staff [get]
+func GetStaff(c *gin.Context) {
+	var staffQuery StaffQuery
+	if err := c.ShouldBind(&staffQuery); err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	staffs, err := models.GetStaff(query.Paginate(c),
+		query.OrderBy(staffQuery.OrderBy, staffQuery.Desc),
+		query.StringSearch("HoTen", staffQuery.Name))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, StaffListResponse{
+		Response: SuccessfulResponse,
+		Data:     staffs,
+	})
+}
+
+// @Summary Get staff by id
+// @Description Get staff by id
+// @Tags staff
+// @Produce json
+// @Param id path int true "Staff id"
+// @Success 200 {object} StaffResponse "Staff response"
+// @Router /staff/{id} [get]
+func GetStaffByID(c *gin.Context) {
+	id := c.Param("id")
+
+	staff, err := models.GetStaffByID(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse(err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, StaffResponse{
+		Response: SuccessfulResponse,
+		Data:     *staff,
+	})
 }
 
 // @Summary Create staff

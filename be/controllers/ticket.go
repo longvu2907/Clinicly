@@ -12,7 +12,7 @@ import (
 
 type TicketRequest struct {
 	PatientID uint  `json:"patient_id" binding:"required"`
-	UpdatedBy *uint `json:"updated_by"`
+	UpdatedBy *uint `json:"updated_by" binding:"required"`
 }
 
 type TicketResponse struct {

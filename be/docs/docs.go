@@ -49,6 +49,500 @@ const docTemplate = `{
                 }
             }
         },
+        "/invoice": {
+            "get": {
+                "description": "Get invoice",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Get invoice",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invoice response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.InvoiceListResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/invoice/{id}": {
+            "get": {
+                "description": "Get invoice by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Get invoice by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Invoice id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invoice response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.InvoiceResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update invoice",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Update invoice",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Invoice id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Invoice data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UpdateInvoiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invoice response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.InvoiceResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete invoice",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Delete invoice",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Invoice id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invoice response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.InvoiceResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medical-report": {
+            "get": {
+                "description": "Get medical report",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Get medical report",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient",
+                        "name": "patient",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date",
+                        "name": "date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create medical report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Create medical report",
+                "parameters": [
+                    {
+                        "description": "Medical report data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medical-report/{id}": {
+            "get": {
+                "description": "Get medical report by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Get medical report by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update medical report",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Update medical report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Medical report id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medical report data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UpdateMedicalReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete medical report",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medical report"
+                ],
+                "summary": "Delete medical report",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Medical report id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medical report response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicalReportResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine": {
+            "get": {
+                "description": "Get medicine",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Get medicine",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine id",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Medicine name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicine response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create medicine",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Create medicine",
+                "parameters": [
+                    {
+                        "description": "Medicine data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicine response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/medicine/enums": {
+            "get": {
+                "description": "Get medicine enums",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Get medicine enums",
+                "responses": {}
+            }
+        },
+        "/medicine/{id}": {
+            "get": {
+                "description": "Get medicine by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Get medicine by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicine response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update medicine",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Update medicine",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicine data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UpdateMedicineRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicine response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete medicine",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "medicine"
+                ],
+                "summary": "Delete medicine",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Medicine id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Medicine response",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.MedicineResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/patient": {
             "get": {
                 "description": "Get patient",
@@ -610,6 +1104,37 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "controllers.InvoiceListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Invoice"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.InvoiceResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Invoice"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.LoginRequest": {
             "type": "object",
             "required": [
@@ -630,6 +1155,133 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/models.User"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicalReportListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.MedicalReport"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicalReportRequest": {
+            "type": "object",
+            "required": [
+                "doctor_id",
+                "patient_id",
+                "updated_by"
+            ],
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "diagnose": {
+                    "type": "string"
+                },
+                "doctor_id": {
+                    "type": "integer"
+                },
+                "patient_id": {
+                    "type": "integer"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.PrescriptionRequest"
+                    }
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.MedicalReportResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.MedicalReport"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicineListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Medicine"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.MedicineRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "price",
+                "quantity",
+                "unit",
+                "updated_by"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "unit": {
+                    "$ref": "#/definitions/types.MedicineUnit"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.MedicineResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Medicine"
                 },
                 "message": {
                     "type": "string"
@@ -664,7 +1316,8 @@ const docTemplate = `{
                 "full_name",
                 "gender",
                 "identity_card",
-                "phone_number"
+                "phone_number",
+                "updated_by"
             ],
             "properties": {
                 "address": {
@@ -785,7 +1438,8 @@ const docTemplate = `{
                 "identity_card",
                 "password",
                 "phone_number",
-                "role"
+                "role",
+                "updated_by"
             ],
             "properties": {
                 "address": {
@@ -860,7 +1514,8 @@ const docTemplate = `{
         "controllers.TicketRequest": {
             "type": "object",
             "required": [
-                "patient_id"
+                "patient_id",
+                "updated_by"
             ],
             "properties": {
                 "patient_id": {
@@ -882,6 +1537,72 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "controllers.UpdateInvoiceRequest": {
+            "type": "object",
+            "properties": {
+                "delivery_status": {
+                    "type": "boolean"
+                },
+                "payment_status": {
+                    "type": "boolean"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.UpdateMedicalReportRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "diagnose": {
+                    "type": "string"
+                },
+                "doctor_id": {
+                    "type": "integer"
+                },
+                "patient_id": {
+                    "type": "integer"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.PrescriptionRequest"
+                    }
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.UpdateMedicineRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "unit": {
+                    "$ref": "#/definitions/types.MedicineUnit"
+                },
+                "updated_by": {
+                    "type": "integer"
                 }
             }
         },
@@ -971,6 +1692,119 @@ const docTemplate = `{
                 },
                 "status": {
                     "$ref": "#/definitions/types.StaffStatus"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.UpdateTicketRequest": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "$ref": "#/definitions/types.TicketStatus"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Invoice": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "delivery_status": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "medical_report": {
+                    "$ref": "#/definitions/models.MedicalReport"
+                },
+                "medical_report_id": {
+                    "type": "integer"
+                },
+                "payment_status": {
+                    "type": "boolean"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.MedicalReport": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "diagnose": {
+                    "type": "string"
+                },
+                "doctor": {
+                    "$ref": "#/definitions/models.Staff"
+                },
+                "doctor_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "patient_id": {
+                    "type": "integer"
+                },
+                "prescription": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Prescription"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Medicine": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "unit": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 },
                 "updated_by": {
                     "type": "integer"
@@ -1144,6 +1978,17 @@ const docTemplate = `{
                 "Other"
             ]
         },
+        "types.MedicineUnit": {
+            "type": "integer",
+            "enum": [
+                1,
+                2
+            ],
+            "x-enum-varnames": [
+                "Pill",
+                "Bottle"
+            ]
+        },
         "types.Role": {
             "type": "integer",
             "enum": [
@@ -1176,9 +2021,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "clinicly.fly.dev",
 	BasePath:         "/api/v1",
-	Schemes:          []string{},
+	Schemes:          []string{"https"},
 	Title:            "Clinic Management",
 	Description:      "Clinic Management API",
 	InfoInstanceName: "swagger",

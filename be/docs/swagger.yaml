@@ -1,5 +1,25 @@
 basePath: /api/v1
 definitions:
+  controllers.InvoiceListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Invoice'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.InvoiceResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Invoice'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
   controllers.LoginRequest:
     properties:
       email:
@@ -14,6 +34,91 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/models.User'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.MedicalReportListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.MedicalReport'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.MedicalReportRequest:
+    properties:
+      date:
+        type: string
+      diagnose:
+        type: string
+      doctor_id:
+        type: integer
+      patient_id:
+        type: integer
+      prescription:
+        items:
+          $ref: '#/definitions/controllers.PrescriptionRequest'
+        type: array
+      updated_by:
+        type: integer
+    required:
+    - doctor_id
+    - patient_id
+    - updated_by
+    type: object
+  controllers.MedicalReportResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.MedicalReport'
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.MedicineListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Medicine'
+        type: array
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+  controllers.MedicineRequest:
+    properties:
+      id:
+        type: string
+      info:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      quantity:
+        type: integer
+      unit:
+        $ref: '#/definitions/types.MedicineUnit'
+      updated_by:
+        type: integer
+    required:
+    - id
+    - name
+    - price
+    - quantity
+    - unit
+    - updated_by
+    type: object
+  controllers.MedicineResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Medicine'
       message:
         type: string
       status:
@@ -53,6 +158,7 @@ definitions:
     - gender
     - identity_card
     - phone_number
+    - updated_by
     type: object
   controllers.PatientResponse:
     properties:
@@ -145,6 +251,7 @@ definitions:
     - password
     - phone_number
     - role
+    - updated_by
     type: object
   controllers.StaffResponse:
     properties:
@@ -174,6 +281,7 @@ definitions:
         type: integer
     required:
     - patient_id
+    - updated_by
     type: object
   controllers.TicketResponse:
     properties:
@@ -183,6 +291,49 @@ definitions:
         type: string
       status:
         type: string
+    type: object
+  controllers.UpdateInvoiceRequest:
+    properties:
+      delivery_status:
+        type: boolean
+      payment_status:
+        type: boolean
+      updated_by:
+        type: integer
+    type: object
+  controllers.UpdateMedicalReportRequest:
+    properties:
+      date:
+        type: string
+      diagnose:
+        type: string
+      doctor_id:
+        type: integer
+      patient_id:
+        type: integer
+      prescription:
+        items:
+          $ref: '#/definitions/controllers.PrescriptionRequest'
+        type: array
+      updated_by:
+        type: integer
+    type: object
+  controllers.UpdateMedicineRequest:
+    properties:
+      id:
+        type: string
+      info:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      quantity:
+        type: integer
+      unit:
+        $ref: '#/definitions/types.MedicineUnit'
+      updated_by:
+        type: integer
     type: object
   controllers.UpdatePatientRequest:
     properties:
@@ -243,6 +394,80 @@ definitions:
         type: integer
       status:
         $ref: '#/definitions/types.StaffStatus'
+      updated_by:
+        type: integer
+    type: object
+  controllers.UpdateTicketRequest:
+    properties:
+      status:
+        $ref: '#/definitions/types.TicketStatus'
+      updated_by:
+        type: integer
+    type: object
+  models.Invoice:
+    properties:
+      created_at:
+        type: string
+      delivery_status:
+        type: boolean
+      id:
+        type: integer
+      medical_report:
+        $ref: '#/definitions/models.MedicalReport'
+      medical_report_id:
+        type: integer
+      payment_status:
+        type: boolean
+      total:
+        type: integer
+      updated_at:
+        type: string
+      updated_by:
+        type: integer
+    type: object
+  models.MedicalReport:
+    properties:
+      created_at:
+        type: string
+      date:
+        type: string
+      diagnose:
+        type: string
+      doctor:
+        $ref: '#/definitions/models.Staff'
+      doctor_id:
+        type: integer
+      id:
+        type: integer
+      patient_id:
+        type: integer
+      prescription:
+        items:
+          $ref: '#/definitions/models.Prescription'
+        type: array
+      updated_at:
+        type: string
+      updated_by:
+        type: integer
+    type: object
+  models.Medicine:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      info:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      quantity:
+        type: integer
+      unit:
+        type: string
+      updated_at:
+        type: string
       updated_by:
         type: integer
     type: object
@@ -357,6 +582,14 @@ definitions:
     - Male
     - Female
     - Other
+  types.MedicineUnit:
+    enum:
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - Pill
+    - Bottle
   types.Role:
     enum:
     - 1
@@ -377,7 +610,17 @@ definitions:
     x-enum-varnames:
     - Working
     - Quit
-host: localhost:8080
+  types.TicketStatus:
+    enum:
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - Waiting
+    - Processing
+    - Done
+host: clinicly.fly.dev
 info:
   contact: {}
   description: Clinic Management API
@@ -406,6 +649,334 @@ paths:
       summary: Login
       tags:
       - auth
+  /invoice:
+    get:
+      description: Get invoice
+      parameters:
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Invoice response
+          schema:
+            $ref: '#/definitions/controllers.InvoiceListResponse'
+      summary: Get invoice
+      tags:
+      - invoice
+  /invoice/{id}:
+    delete:
+      description: Delete invoice
+      parameters:
+      - description: Invoice id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Invoice response
+          schema:
+            $ref: '#/definitions/controllers.InvoiceResponse'
+      summary: Delete invoice
+      tags:
+      - invoice
+    get:
+      description: Get invoice by id
+      parameters:
+      - description: Invoice id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Invoice response
+          schema:
+            $ref: '#/definitions/controllers.InvoiceResponse'
+      summary: Get invoice by id
+      tags:
+      - invoice
+    put:
+      consumes:
+      - application/json
+      description: Update invoice
+      parameters:
+      - description: Invoice id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Invoice data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Invoice response
+          schema:
+            $ref: '#/definitions/controllers.InvoiceResponse'
+      summary: Update invoice
+      tags:
+      - invoice
+  /medical-report:
+    get:
+      description: Get medical report
+      parameters:
+      - description: Patient
+        in: query
+        name: patient
+        type: string
+      - description: Date
+        in: query
+        name: date
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medical report response
+          schema:
+            $ref: '#/definitions/controllers.MedicalReportListResponse'
+      summary: Get medical report
+      tags:
+      - medical report
+    post:
+      consumes:
+      - application/json
+      description: Create medical report
+      parameters:
+      - description: Medical report data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.MedicalReportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medical report response
+          schema:
+            $ref: '#/definitions/controllers.MedicalReportResponse'
+      summary: Create medical report
+      tags:
+      - medical report
+  /medical-report/{id}:
+    delete:
+      description: Delete medical report
+      parameters:
+      - description: Medical report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medical report response
+          schema:
+            $ref: '#/definitions/controllers.MedicalReportResponse'
+      summary: Delete medical report
+      tags:
+      - medical report
+    get:
+      description: Get medical report by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medical report response
+          schema:
+            $ref: '#/definitions/controllers.MedicalReportResponse'
+      summary: Get medical report by id
+      tags:
+      - medical report
+    put:
+      consumes:
+      - application/json
+      description: Update medical report
+      parameters:
+      - description: Medical report id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Medical report data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateMedicalReportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medical report response
+          schema:
+            $ref: '#/definitions/controllers.MedicalReportResponse'
+      summary: Update medical report
+      tags:
+      - medical report
+  /medicine:
+    get:
+      description: Get medicine
+      parameters:
+      - description: Medicine id
+        in: query
+        name: id
+        type: string
+      - description: Medicine name
+        in: query
+        name: name
+        type: string
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medicine response
+          schema:
+            $ref: '#/definitions/controllers.MedicineListResponse'
+      summary: Get medicine
+      tags:
+      - medicine
+    post:
+      consumes:
+      - application/json
+      description: Create medicine
+      parameters:
+      - description: Medicine data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.MedicineRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medicine response
+          schema:
+            $ref: '#/definitions/controllers.MedicineResponse'
+      summary: Create medicine
+      tags:
+      - medicine
+  /medicine/{id}:
+    delete:
+      description: Delete medicine
+      parameters:
+      - description: Medicine id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medicine response
+          schema:
+            $ref: '#/definitions/controllers.MedicineResponse'
+      summary: Delete medicine
+      tags:
+      - medicine
+    get:
+      description: Get medicine by id
+      parameters:
+      - description: Medicine id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medicine response
+          schema:
+            $ref: '#/definitions/controllers.MedicineResponse'
+      summary: Get medicine by id
+      tags:
+      - medicine
+    put:
+      consumes:
+      - application/json
+      description: Update medicine
+      parameters:
+      - description: Medicine id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Medicine data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateMedicineRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Medicine response
+          schema:
+            $ref: '#/definitions/controllers.MedicineResponse'
+      summary: Update medicine
+      tags:
+      - medicine
+  /medicine/enums:
+    get:
+      description: Get medicine enums
+      produces:
+      - application/json
+      responses: {}
+      summary: Get medicine enums
+      tags:
+      - medicine
   /patient:
     get:
       description: Get patient
@@ -776,4 +1347,6 @@ paths:
       summary: Get ticket enums
       tags:
       - ticket
+schemes:
+- https
 swagger: "2.0"
