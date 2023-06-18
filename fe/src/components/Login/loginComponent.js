@@ -1,22 +1,30 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useState } from 'react';
-import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const LoginComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (event) => {
-    try {
-      const response = await axios.post('/auth/login', {
-        email,
-        password,
-      });
-      // Handle successful login
-      console.log(response);
-    } catch (error) {
-      // Handle error
-      console.log(error);
+  const handleSubmit = async (e) => {
+    const response = await fetch('https://clinicly.fly.dev/api/v1/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      // if authentication succeeds, set a cookie with the token
+      const { token } = await response.json();
+      Cookies.set('auth_token', token);
+      console.log('Authentication succeeded!');
+    } else {
+      // if authentication fails, display an error message
+      const { message } = await response.json();
+      alert(message);
+      console.error('Authentication failed!');
     }
   };
 
@@ -27,8 +35,8 @@ export const LoginComponent = () => {
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
-      onFinish={handleSubmit}
       autoComplete="off"
+      onFinish={handleSubmit}
     >
       <Form.Item
         label="Email"
