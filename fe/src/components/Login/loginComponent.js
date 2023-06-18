@@ -23,7 +23,7 @@ export const LoginComponent = () => {
   return (
     <Form
       name="basic"
-      labelCol={{ span: 8 }}
+      labelCol={{ span: 6 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
@@ -38,7 +38,7 @@ export const LoginComponent = () => {
         onChange={(e) => setEmail(e.target.value)}
         rules={[{ required: true, message: 'Please input your email!' }]}
       >
-        <Input />
+        <Input className="lg:w-[35rem]" />
       </Form.Item>
 
       <Form.Item
@@ -49,15 +49,21 @@ export const LoginComponent = () => {
         onChange={(e) => setPassword(e.target.value)}
         rules={[{ required: true, message: 'Please input your password!' }]}
       >
-        <Input.Password />
+        <Input.Password className="lg:w-[35rem]" />
       </Form.Item>
 
-      <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+      <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 6, span: 16 }}>
         <Checkbox>Remember me</Checkbox>
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="default" htmlType="submit" size="large" shape="round" block className="bg-primary-100 text-white">
+      <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+        <Button
+          type="default"
+          htmlType="submit"
+          size="large"
+          shape="round"
+          className="bg-primary-100 text-white lg:w-[35rem]"
+        >
           Submit
         </Button>
       </Form.Item>

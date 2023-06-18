@@ -1,4 +1,4 @@
-const IMAGES = {
+export const IMAGES = {
   logoClinicly: require('./LogoClinicly.svg').default,
   logoDashboard: require('./dashboard.svg').default,
   logoPatient: require('./patient.svg').default,
@@ -9,4 +9,3 @@ const IMAGES = {
   logoManage: require('./manage.svg').default,
   logoLogout: require('./logout.svg').default,
 };
-export default IMAGES;
